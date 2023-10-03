@@ -1,6 +1,3 @@
-/* eslint-disable no-console */
-/* eslint-disable max-classes-per-file */
-
 class Node {
   constructor(data) {
     this.data = data;
@@ -10,52 +7,154 @@ class Node {
 
 class SinglyLinkedList {
   constructor() {
-    this.head = new Node("head");
+    this.head = null;
+    this.tail = null;
   }
 
-  find(data) {
-    let currentNode = this.head;
-    while (currentNode.data !== data && currentNode.next !== null) {
-      currentNode = currentNode.next;
+  findIndex(element) {
+    let index = 0;
+    let pointer = this.head;
+    while (pointer !== null) {
+      if (pointer.data === element) {
+        return index;
+      }
+      pointer = pointer.next;
+      index += 1;
     }
-    return currentNode;
+    return -1;
   }
 
-  insert(newData, afterData) {
-    const newNode = new Node(newData);
-    const currentNode = this.find(afterData);
-    newNode.next = currentNode.next;
-    currentNode.next = newNode;
+  findElement(index) {
+    let currentIndex = 0;
+    let pointer = this.head;
+    while (pointer !== null) {
+      if (currentIndex === index) {
+        return pointer.data;
+      }
+      currentIndex += 1;
+      pointer = pointer.next;
+    }
+    return undefined;
   }
 
-  display() {
-    let currentNode = this.head.next;
-    while (currentNode !== null) {
-      console.log(currentNode.data);
-      currentNode = currentNode.next;
+  findPreviousByElement(element) {
+    if (this.head === null) {
+      return null;
+    }
+
+    let pointer = this.head;
+    while (pointer.next !== null) {
+      if (pointer.next.data === element) {
+        return pointer;
+      }
+      pointer = pointer.next;
+    }
+
+    return null;
+  }
+
+  findPreviousByIndex(index) {
+    if (this.head === null) {
+      return null;
+    }
+
+    let currentIndex = 0;
+    let pointer = this.head;
+    while (pointer.next !== null) {
+      if (currentIndex === index - 1) {
+        return pointer;
+      }
+      currentIndex += 1;
+      pointer = pointer.next;
+    }
+
+    return null;
+  }
+
+  length() {
+    if (this.head === null) {
+      return 0;
+    } else {
+      return 1 + this.head.next.length();
     }
   }
 
-  findPrevious(data) {
-    let currentNode = this.head;
-    while (currentNode.next !== null && currentNode.next.data !== data) {
-      currentNode = currentNode.next;
+  print() {
+    let pointer = this.head;
+    while (pointer !== null) {
+      console.log(pointer.data);
+      pointer = pointer.next;
     }
-    return currentNode;
   }
 
-  remove(data) {
-    const previousNode = this.findPrevious(data);
-    if (previousNode.next !== null) {
-      previousNode.next = previousNode.next.next;
+  insertAtHead(data) {
+    let node = new Node(data);
+    node.next = this.head;
+
+    this.head = node;
+    if (this.tail === null) {
+      this.tail = this.head;
     }
+  }
+
+  insertAtTail(data) {
+    if (this.head === null) {
+      this.insertAtHead(data);
+      return;
+    }
+
+    let node = new Node(data);
+    this.tail.next = node;
+    this.tail = node;
+  }
+
+  insertAtIndex(index, data) {
+    if (index < 0 || index > this.length()) {
+      throw new Error("Invalid index");
+    }
+
+    if (index === 0) {
+      this.insertAtHead(data);
+      return;
+    }
+
+    if (index === this.length()) {
+      this.insertAtTail(data);
+      return;
+    }
+
+    let node = new Node(data);
+    let previousNode = this.findPreviousByIndex(index);
+    node.next = previousNode.next;
+    previousNode.next = node;
+  }
+
+  deleteAtHead() {
+    if (this.head === null) {
+      throw new Error("Linked list is empty");
+    }
+
+    this.head = this.head.next;
+    if (this.head === null) {
+      this.tail = null;
+    }
+  }
+
+  deleteAtTail() {
+    if (this.head === null) {
+      throw new Error("Linked list is empty");
+    }
+
+    if (this.head.next === null) {
+      this.head = null;
+      this.tail = null;
+      return;
+    }
+
+    let previousNode = this.findPreviousByElement(this.tail.data);
+    this.tail = previousNode;
+    previousNode.next = null;
   }
 }
 
-// Example usage of LinkedList
-const shoppingList = new SinglyLinkedList();
-shoppingList.insert("Milk", "head");
-shoppingList.insert("Bread", "Milk");
-shoppingList.insert("Eggs", "Bread");
-
-shoppingList.display();
+const list1 = new SinglyLinkedList();
