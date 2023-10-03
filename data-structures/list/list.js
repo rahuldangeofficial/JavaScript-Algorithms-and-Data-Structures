@@ -26,7 +26,7 @@ class List {
   }
 
   // Get the number of elements in the list
-  size() {
+    size() {
     return this.items.length;
   }
 

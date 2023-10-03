@@ -124,7 +124,7 @@ class SinglyLinkedList {
     }
 
     let node = new Node(data);
-    let previousNode = this.findPreviousByIndex(index);
+    let previousNode = this.findPreviousNodeByIndex(index);
     node.next = previousNode.next;
     previousNode.next = node;
   }
@@ -151,7 +151,7 @@ class SinglyLinkedList {
       return;
     }
 
-    let previousNode = this.findPreviousByElement(this.tail.data);
+    let previousNode = this.findPreviousNodeByElement(this.tail.data);
     this.tail = previousNode;
     previousNode.next = null;
   }
