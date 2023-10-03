@@ -155,6 +155,31 @@ class SinglyLinkedList {
     this.tail = previousNode;
     previousNode.next = null;
   }
+
+  deleteAtIndex(index) {
+    if (index < 0 || index >= this.length()) {
+      throw new Error('Invalid index');
+    }
+  
+    let pointer = this.head;
+    let previousNode = null;
+    for (let i = 0; i < index; i++) {
+      previousNode = pointer;
+      pointer = pointer.next;
+    }
+  
+    if (pointer === this.head) {
+      this.head = pointer.next;
+    } else if (pointer === this.tail) {
+      this.tail = previousNode;
+      previousNode.next = null;
+    } else {
+      previousNode.next = pointer.next;
+    }
+  
+    pointer = null;
+  }
+  
 }
 
 const list1 = new SinglyLinkedList();
