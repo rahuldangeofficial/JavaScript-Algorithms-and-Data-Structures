@@ -37,7 +37,7 @@ class SinglyLinkedList {
     return undefined;
   }
 
-  findPreviousByElement(element) {
+  findPreviousNodeByElement(element) {
     if (this.head === null) {
       return null;
     }
@@ -53,7 +53,7 @@ class SinglyLinkedList {
     return null;
   }
 
-  findPreviousByIndex(index) {
+  findPreviousNodeByIndex(index) {
     if (this.head === null) {
       return null;
     }
