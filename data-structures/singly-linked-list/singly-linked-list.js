@@ -58,6 +58,10 @@ class SinglyLinkedList {
       return null;
     }
 
+    if (index < 0 || index >= this.length()) {
+      throw new Error("Invalid index");
+    }
+
     let currentIndex = 0;
     let pointer = this.head;
     while (pointer.next !== null) {
@@ -72,11 +76,13 @@ class SinglyLinkedList {
   }
 
   length() {
-    if (this.head === null) {
-      return 0;
-    } else {
-      return 1 + this.head.next.length();
+    let count = 0;
+    let pointer = this.head;
+    while (pointer !== null) {
+      count++;
+      pointer = pointer.next;
     }
+    return count;
   }
 
   print() {
@@ -115,18 +121,21 @@ class SinglyLinkedList {
 
     if (index === 0) {
       this.insertAtHead(data);
-      return;
+      return true;
     }
 
     if (index === this.length()) {
       this.insertAtTail(data);
-      return;
+      return true;
     }
 
     let node = new Node(data);
     let previousNode = this.findPreviousNodeByIndex(index);
+
     node.next = previousNode.next;
     previousNode.next = node;
+
+    return true;
   }
 
   deleteAtHead() {
@@ -158,28 +167,29 @@ class SinglyLinkedList {
 
   deleteAtIndex(index) {
     if (index < 0 || index >= this.length()) {
-      throw new Error('Invalid index');
+      throw new Error("Invalid index");
     }
-  
-    let pointer = this.head;
-    let previousNode = null;
-    for (let i = 0; i < index; i++) {
-      previousNode = pointer;
-      pointer = pointer.next;
+
+    let previousNode = this.findPreviousNodeByIndex(index);
+
+    if (index === 0) {
+      this.deleteAtHead();
+      return true;
     }
-  
-    if (pointer === this.head) {
-      this.head = pointer.next;
-    } else if (pointer === this.tail) {
-      this.tail = previousNode;
-      previousNode.next = null;
-    } else {
-      previousNode.next = pointer.next;
+
+    if (index === this.length() - 1) {
+      this.deleteAtTail();
+      return true;
     }
-  
-    pointer = null;
+
+    previousNode.next = previousNode.next.next;
+    return true;
   }
-  
+
+  clear() {
+    this.head = null;
+    this.tail = null;
+  }
 }
 
 const list1 = new SinglyLinkedList();
