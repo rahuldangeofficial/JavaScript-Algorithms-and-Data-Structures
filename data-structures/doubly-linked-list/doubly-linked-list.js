@@ -1,9 +1,7 @@
-/* eslint-disable no-console */
-/* eslint-disable max-classes-per-file */
 class Node {
   constructor(data) {
-    this.data = data;
     this.prev = null;
+    this.data = data;
     this.next = null;
   }
 }
@@ -12,97 +10,203 @@ class DoublyLinkedList {
   constructor() {
     this.head = null;
     this.tail = null;
-    this.size = 0;
   }
 
-  // Append a new node to the end of the doubly linked list
-  append(data) {
-    const newNode = new Node(data);
-    if (!this.head) {
-      this.head = newNode;
-      this.tail = newNode;
-    } else {
-      newNode.prev = this.tail;
-      this.tail.next = newNode;
-      this.tail = newNode;
-    }
-    this.size += 1;
-  }
-
-  // Insert a new node after a given node
-  insertAfter(data, targetData) {
-    const newNode = new Node(data);
-    let current = this.head;
-    while (current) {
-      if (current.data === targetData) {
-        newNode.prev = current;
-        newNode.next = current.next;
-        if (current === this.tail) {
-          this.tail = newNode;
-        } else {
-          current.next.prev = newNode;
-        }
-        current.next = newNode;
-        this.size += 1;
-        return true;
+  findIndex(element) {
+    let index = 0;
+    let pointer = this.head;
+    while (pointer !== null) {
+      if (pointer.data === element) {
+        return index;
       }
-      current = current.next;
+      pointer = pointer.next;
+      index += 1;
     }
-    return false; // Node with targetData not found
+    return -1;
   }
 
-  // Delete a node with a specific data value
-  delete(data) {
-    let current = this.head;
-    while (current) {
-      if (current.data === data) {
-        if (current.prev) {
-          current.prev.next = current.next;
-        } else {
-          this.head = current.next;
-        }
-        if (current.next) {
-          current.next.prev = current.prev;
-        } else {
-          this.tail = current.prev;
-        }
-        this.size -= 1;
-        return true;
+  findElement(index) {
+    let currentIndex = 0;
+    let pointer = this.head;
+    while (pointer !== null) {
+      if (currentIndex === index) {
+        return pointer.data;
       }
-      current = current.next;
+      currentIndex += 1;
+      pointer = pointer.next;
     }
-    return false; // Node with data not found
+    return undefined;
   }
 
-  // Get the size of the doubly linked list
-  getSize() {
-    return this.size;
+  findPreviousNodeByElement(element) {
+    if (this.head === null) {
+      return null;
+    }
+
+    let pointer = this.head;
+    while (pointer !== null) {
+      if (pointer.data === element) {
+        return pointer.prev;
+      }
+      pointer = pointer.next;
+    }
+
+    return null;
   }
 
-  // Display the elements of the doubly linked list
-  display() {
-    let current = this.head;
-    const elements = [];
-    while (current) {
-      elements.push(current.data);
-      current = current.next;
+  findPreviousNodeByIndex(index) {
+    if (this.head === null) {
+      return null;
     }
-    return elements;
+
+    let currentIndex = 0;
+    let pointer = this.head;
+    while (pointer !== null) {
+      if (currentIndex === index) {
+        return pointer.prev;
+      }
+      currentIndex += 1;
+      pointer = pointer.next;
+    }
+
+    return null;
+  }
+
+  length() {
+    let count = 0;
+    let pointer = this.head;
+    while (pointer !== null) {
+      count++;
+      pointer = pointer.next;
+    }
+    return count;
+  }
+
+  print() {
+    let pointer = this.head;
+    while (pointer !== null) {
+      console.log(pointer.data);
+      pointer = pointer.next;
+    }
+  }
+
+  printReverse() {
+    let pointer = this.tail;
+    while (pointer !== null) {
+      console.log(pointer.data);
+      pointer = pointer.prev;
+    }
+  }
+
+  insertAtHead(data) {
+    let node = new Node(data);
+    node.next = this.head;
+
+    this.head = node;
+    if (this.tail === null) {
+      this.tail = this.head;
+    }
+  }
+
+  insertAtTail(data) {
+    if (this.head === null) {
+      this.insertAtHead(data);
+      return;
+    }
+
+    let node = new Node(data);
+    node.prev = this.tail;
+    this.tail.next = node;
+    this.tail = node;
+  }
+
+  insertAtIndex(index, data) {
+    if (index < 0 || index > this.length()) {
+      throw new Error("Invalid index");
+    }
+
+    if (index === 0) {
+      this.insertAtHead(data);
+      return true;
+    }
+
+    if (index === this.length()) {
+      this.insertAtTail(data);
+      return true;
+    }
+
+    let node = new Node(data);
+    let previousNode = this.findPreviousNodeByIndex(index);
+
+    node.prev = previousNode;
+    node.next = previousNode.next;
+
+    previousNode.next.prev = node;
+    previousNode.next = node;
+    return true;
+  }
+
+  deleteAtHead() {
+    if (this.head === null) {
+      throw new Error("Linked list is empty");
+    }
+
+    this.head = this.head.next;
+    this.head.prev = null;
+    if (this.head === null) {
+      this.tail = null;
+    }
+  }
+
+  deleteAtTail() {
+    if (this.head === null) {
+      throw new Error("Linked list is empty");
+    }
+
+    if (this.head.next === null) {
+      this.head = null;
+      this.tail = null;
+      return;
+    }
+
+    let previousNode = this.findPreviousNodeByElement(this.tail.data);
+    previousNode.next = null;
+    this.tail = previousNode;
+  }
+
+  deleteAtIndex(index) {
+    if (index < 0 || index >= this.length()) {
+      throw new Error("Invalid index");
+    }
+
+    if (index === 0) {
+      this.deleteAtHead();
+      return true;
+    }
+
+    if (index === this.length() - 1) {
+      this.deleteAtTail();
+      return true;
+    }
+
+    let currentIndex = 0;
+    let pointer = this.head;
+
+    while (currentIndex < index - 1) {
+      pointer = pointer.next;
+      currentIndex++;
+    }
+
+    pointer.next = pointer.next.next;
+    pointer.next.prev = pointer;
+
+    return true;
+  }
+
+  clear() {
+    this.head = null;
+    this.tail = null;
   }
 }
 
-// Example usage
-const myList = new DoublyLinkedList();
-myList.append(1);
-myList.append(2);
-myList.append(3);
-
-console.log(myList.display()); // Output: [1, 2, 3]
-
-myList.insertAfter(4, 2);
-console.log(myList.display()); // Output: [1, 2, 4, 3]
-
-myList.delete(2);
-console.log(myList.display()); // Output: [1, 4, 3]
-
-console.log(myList.getSize()); // Output: 3
+const list1 = new DoublyLinkedList();
