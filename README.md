@@ -8,6 +8,7 @@
 - [Circular Singly Linked List](https://github.com/rahuldangeofficial/JavaScript-Algorithms-and-Data-Structures/tree/main/data-structures/circular-singly-linked-list)
 - [Circular Doubly Linked List](https://github.com/rahuldangeofficial/JavaScript-Algorithms-and-Data-Structures/tree/main/data-structures/circular-doubly-linked-list)
 - [Stack Using Array](https://github.com/rahuldangeofficial/JavaScript-Algorithms-and-Data-Structures/tree/main/data-structures/stack-using-array)
+- [Stack Using Linked List](https://github.com/rahuldangeofficial/JavaScript-Algorithms-and-Data-Structures/tree/main/data-structures/stack-using-linked-list)
 
 ### Algorithms Examples
 
