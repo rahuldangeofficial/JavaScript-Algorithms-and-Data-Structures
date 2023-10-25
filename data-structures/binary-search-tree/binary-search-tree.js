@@ -99,6 +99,32 @@ class BST {
         postorderTraverse(this.root);
     }
 
+    BFS() {
+        if (!this.root) {
+            return [];
+        }
+
+        const result = [];
+        const queue = [this.root];
+
+        while (queue.length > 0) {
+            const currentNode = queue.shift();
+
+            result.push(currentNode.data);
+
+            if (currentNode.left) {
+                queue.push(currentNode.left);
+            }
+
+            if (currentNode.right) {
+                queue.push(currentNode.right);
+            }
+        }
+
+        return result;
+    }
+
+
     searchMin() {
         let min = this.root.data;
         const traverse = (pointer) => {
