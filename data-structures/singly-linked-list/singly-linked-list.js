@@ -38,10 +38,6 @@ class SinglyLinkedList {
   }
 
   findPreviousNodeByElement(element) {
-    if (this.head === null) {
-      return null;
-    }
-
     let pointer = this.head;
     while (pointer.next !== null) {
       if (pointer.next.data === element) {
@@ -49,7 +45,6 @@ class SinglyLinkedList {
       }
       pointer = pointer.next;
     }
-
     return null;
   }
 
