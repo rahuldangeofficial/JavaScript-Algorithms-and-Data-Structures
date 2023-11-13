@@ -10,204 +10,157 @@ class BST {
     constructor() {
         this.root = null;
     }
-
     insertElement(data) {
-        const newNode = new Node(data);
-
-        const insert = (newNode, pointer) => {
-            if (pointer === null) {
-                this.root = newNode;
-                return true;
-            }
-
-            if (newNode.data < pointer.data) {
-                if (pointer.left === null) {
-                    pointer.left = newNode;
-                    return true;
+        let node = new Node(data);
+        if (this.root === null) {
+            this.root = node;
+            return true;
+        }
+        const insertHelper = (refNode, newNode) => {
+            if (newNode.data > refNode.data) {
+                if (refNode.right !== null) {
+                    return insertHelper(refNode.right, newNode);
                 } else {
-                    return insert(newNode, pointer.left);
+                    refNode.right = node;
+                    return true;
                 }
             }
-
-            if (newNode.data > pointer.data) {
-                if (pointer.right === null) {
-                    pointer.right = newNode;
-                    return true;
+            if (newNode.data < refNode.data) {
+                if (refNode.left !== null) {
+                    return insertHelper(refNode.left, newNode);
                 } else {
-                    return insert(newNode, pointer.right);
+                    refNode.left = node;
+                    return true;
                 }
             }
-
             return false;
         };
-
-        insert(newNode, this.root);
+        return insertHelper(this.root, node);
     }
-
-    printInorder() {
-        const inorderTraverse = (pointer) => {
-            if (pointer === null) {
-                return;
+    getInorderElements() {
+        const elements = [];
+        const inorderTraversal = (refNode) => {
+            if (refNode !== null) {
+                inorderTraversal(refNode.left);
+                elements.push(refNode.data);
+                inorderTraversal(refNode.right);
             }
-
-            if (pointer.left !== null) {
-                inorderTraverse(pointer.left);
-            }
-            console.log(pointer.data);
-            if (pointer.right !== null) {
-                inorderTraverse(pointer.right);
-            }
-            return;
         };
-
-        inorderTraverse(this.root);
+        inorderTraversal(this.root);
+        return elements;
     }
-
-    printPreorder() {
-        const preorderTraverse = (pointer) => {
-            if (pointer === null) {
-                return;
+    getPreorderElements() {
+        const elements = [];
+        const preorderTraversal = (refNode) => {
+            if (refNode !== null) {
+                elements.push(refNode.data);
+                preorderTraversal(refNode.left);
+                preorderTraversal(refNode.right);
             }
-            console.log(pointer.data);
-            if (pointer.left !== null) {
-                preorderTraverse(pointer.left);
-            }
-            if (pointer.right !== null) {
-                preorderTraverse(pointer.right);
-            }
-            return;
         };
-
-        preorderTraverse(this.root);
+        preorderTraversal(this.root);
+        return elements;
     }
-
-    printPostorder() {
-        const postorderTraverse = (pointer) => {
-            if (pointer === null) {
-                return;
+    getPreorderElements() {
+        const elements = [];
+        const preorderTraversal = (refNode) => {
+            if (refNode !== null) {
+                elements.push(refNode.data);
+                preorderTraversal(refNode.left);
+                preorderTraversal(refNode.right);
             }
-
-            if (pointer.left !== null) {
-                postorderTraverse(pointer.left);
-            }
-            if (pointer.right !== null) {
-                postorderTraverse(pointer.right);
-            }
-            console.log(pointer.data);
-            return;
         };
-        postorderTraverse(this.root);
+        preorderTraversal(this.root);
+        return elements;
     }
-
+    getPostorderElements() {
+        const elements = [];
+        const postorderTraversal = (refNode) => {
+            if (refNode !== null) {
+                postorderTraversal(refNode.left);
+                postorderTraversal(refNode.right);
+                elements.push(refNode.data);
+            }
+        };
+        postorderTraversal(this.root);
+        return elements;
+    }
     BFS() {
         if (!this.root) {
             return [];
         }
-
         const result = [];
         const queue = [this.root];
-
         while (queue.length > 0) {
             const currentNode = queue.shift();
-
             result.push(currentNode.data);
-
             if (currentNode.left) {
                 queue.push(currentNode.left);
             }
-
             if (currentNode.right) {
                 queue.push(currentNode.right);
             }
         }
-
         return result;
     }
-
-
-    searchMin() {
-        let min = this.root.data;
-        const traverse = (pointer) => {
-            if (pointer !== null) {
-                if (pointer.data < min) {
-                    min = pointer.data;
-                }
-                traverse(pointer.left);
+    searchMin(refNode = this.root) {
+        if (refNode !== null) {
+            if (refNode.left === null) {
+                return refNode.data;
+            } else {
+                return this.searchMin(refNode.left);
             }
-        };
-        traverse(this.root);
-        return min;
-    }
-
-    searchMax() {
-        let max = this.root.data;
-        const traverse = (pointer) => {
-            if (pointer !== null) {
-                if (pointer.data > max) {
-                    max = pointer.data;
-                }
-                traverse(pointer.right);
-            }
-        };
-
-        traverse(this.root);
-        return max;
-    }
-
-    searchElement(element) {
-        const traverse = (pointer) => {
-            if (pointer === null) {
-                return false;
-            }
-            if (pointer.data === element) {
-                return true;
-            }
-            if (pointer.data > element) {
-                return traverse(pointer.left);
-            }
-            if (pointer.data < element) {
-                return traverse(pointer.right);
-            }
-        };
-        return traverse(this.root);
-    }
-
-    deleteElement(element) {
-        const deleteNode = (node, element) => {
-            if (node === null) {
-                return null;
-            }
-
-            if (element < node.data) {
-                node.left = deleteNode(node.left, element);
-            }
-            if (element > node.data) {
-                node.right = deleteNode(node.right, element);
-            }
-            if (element === node.data) {
-                if (node.left === null) {
-                    return node.right;
-                }
-                if (node.right === null) {
-                    return node.left;
-                }
-
-                node.data = this.minValueNode(node.right).data;
-                node.right = deleteNode(node.right, node.data);
-            }
-            return node;
-        };
-
-        this.root = deleteNode(this.root, element);
-    }
-
-    minValueNode(node) {
-        let current = node;
-        while (current.left !== null) {
-            current = current.left;
         }
-        return current;
+    }
+    searchMax(refNode = this.root) {
+        if (refNode !== null) {
+            if (refNode.right === null) {
+                return refNode.data;
+            } else {
+                return this.searchMax(refNode.right);
+            }
+        }
+    }
+    searchElement(element) {
+        const recursiveSearch = (refNode, element) => {
+            if (refNode !== null) {
+                if (element === refNode.data) {
+                    return true;
+                }
+                if (element > refNode.data) {
+                    return recursiveSearch(refNode.right, element);
+                }
+                if (element < refNode.data) {
+                    return recursiveSearch(refNode.left, element);
+                }
+            }
+            return false;
+        };
+        return recursiveSearch(this.root, element);
+    }
+    deleteElement(element) {
+        const provideNewRef = (refNode, element) => {
+            if (element < refNode.data) {
+                refNode.left = provideNewRef(refNode.left, element);
+            }
+            if (element > refNode.data) {
+                refNode.right = provideNewRef(refNode.right, element);
+            }
+            if (element === refNode.data) {
+                if (refNode.left === null) {
+                    return refNode.right;
+                }
+                if (refNode.right === null) {
+                    return refNode.left;
+                }
+
+                refNode.data = this.searchMin(refNode.right);
+                refNode.right = this.provideNewRef(refNode.right, refNode.data);
+            }
+            return refNode;
+        };
+        this.root = provideNewRef(this.root, element);
     }
 }
 
-const bst1 = new BST();
+let bst1 = new BST();
