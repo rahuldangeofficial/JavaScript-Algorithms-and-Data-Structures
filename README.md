@@ -13,8 +13,7 @@
 
 ### Algorithms Examples
 
-- Linear Search
-- Binary Search
+- [Search](https://github.com/rahuldangeofficial/JavaScript-Algorithms-and-Data-Structures/tree/main/algorithms/search)
 
 #### Features
 
