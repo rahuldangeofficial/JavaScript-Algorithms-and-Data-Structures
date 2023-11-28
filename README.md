@@ -15,6 +15,8 @@
 
 - [Search](https://github.com/rahuldangeofficial/JavaScript-Algorithms-and-Data-Structures/tree/main/algorithms/search)
 
+- [Sort](https://github.com/rahuldangeofficial/JavaScript-Algorithms-and-Data-Structures/tree/main/algorithms/sort)
+
 #### Features
 
 - Working examples of popular data structures and algorithms in JavaScript
